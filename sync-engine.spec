@@ -9,7 +9,7 @@ Group:		Office
 Source:		%{name}-%{version}.tar.bz2
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%name-root
-BuildRequires:	python-devel
+BuildRequires:	python-setuptools
 
 %description
 Sync-engine is part of the SynCE project.
