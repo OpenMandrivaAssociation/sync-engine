@@ -12,7 +12,8 @@ Buildroot:	%{_tmppath}/%name-root
 BuildRequires:	python-setuptools
 BuildRequires:	python-devel
 Requires:	python-libxslt
-Requires:	python-librtfcomp	
+Requires:	python-librtfcomp
+Requires:	librra-python	
 
 %description
 Sync-engine is part of the SynCE project.
