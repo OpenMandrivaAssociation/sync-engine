@@ -13,7 +13,8 @@ BuildRequires:	python-setuptools
 BuildRequires:	python-devel
 Requires:	python-libxslt
 Requires:	python-librtfcomp
-Requires:	librra-python	
+Requires:	librra-python
+Requires:	librapi-python	
 
 %description
 Sync-engine is part of the SynCE project.
