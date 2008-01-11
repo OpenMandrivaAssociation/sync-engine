@@ -11,6 +11,7 @@ URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%name-root
 BuildRequires:	python-setuptools
 BuildRequires:	python-devel
+Requires:	python-libxslt
 
 %description
 Sync-engine is part of the SynCE project.
