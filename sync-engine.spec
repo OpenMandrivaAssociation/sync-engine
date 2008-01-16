@@ -3,7 +3,7 @@
 Summary:	SynCE: Serial connection support
 Name:		%{name}
 Version:	0.11
-Release:	%mkrel 3
+Release:	%mkrel 5
 License:	MIT
 Group:		Office
 Source:		%{name}-%{version}.tar.bz2
