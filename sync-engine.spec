@@ -21,13 +21,22 @@ Requires:	python-gobject
 Requires:	python-pyxml
 Requires:	python-dbus
 Requires:	python-sqlite2
-Requires:	libopensync-plugin-python >= 0.35
-Requires:	libopensync-plugin-vformat >= 0.35
-Obsoletes:	libopensync-plugin-synce <= 0.22-4
 
 
 %description
 Sync-engine is part of the SynCE project.
+
+
+%package -n libopensync-plugin-synce
+Summary:	synce plugin for opensync
+Group:		Office
+Requires:	libopensync-plugin-python >= 0.35
+Requires:	libopensync-plugin-vformat >= 0.35
+Requires:	sync-engine
+Obsoletes:	libopensync-plugin-synce <= 0.22-4
+
+%description -n libopensync-plugin-synce
+Synce plugin for Opensync
 
 %prep
 %setup -q
@@ -58,5 +67,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/synce/*.xml
 %{_bindir}/*py
 %{_bindir}/%{name}
-%{_libdir}/opensync-1.0/python-plugins/*
 %{py_puresitedir}/*
+
+%files -n libopensync-plugin-synce
+%{_libdir}/opensync-1.0/python-plugins/*
