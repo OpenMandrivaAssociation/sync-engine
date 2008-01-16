@@ -3,7 +3,7 @@
 Summary:	SynCE: Serial connection support
 Name:		%{name}
 Version:	0.11
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	MIT
 Group:		Office
 Source:		%{name}-%{version}.tar.bz2
@@ -14,7 +14,17 @@ BuildRequires:	python-devel
 Requires:	python-libxslt
 Requires:	python-librtfcomp
 Requires:	python-librra
-Requires:	librapi-python	
+Requires:	librapi-python
+Requires:	libxml2-python
+Requires:	pywbxml
+Requires:	python-gobject
+Requires:	python-pyxml
+Requires:	python-dbus
+Requires:	python-sqlite2
+Requires:	libopensync-plugin-python >= 0.35
+Requires:	libopensync-plugin-vformat >= 0.35
+Obsoletes:	libopensync-plugin-synce <= 0.22-4
+
 
 %description
 Sync-engine is part of the SynCE project.
@@ -23,15 +33,22 @@ Sync-engine is part of the SynCE project.
 %setup -q
 
 %build
-python ./setup.py build
+%{__python} ./setup.py build
 
 %install
 rm -rf %{buildroot}
 mkdir -p %buildroot%_bindir
-python ./setup.py install --root=%{buildroot}
+%{__python} ./setup.py install --skip-build --root=%{buildroot}
 
 mkdir -p %{buildroot}/%{_sysconfdir}/synce
 mv config/config.xml %{buildroot}/%{_sysconfdir}/synce/config.xml
+
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/opensync-1.0/python-plugins/
+mv \
+ $RPM_BUILD_ROOT%{py_puresitedir}/plugins/synce-opensync-plugin-3* \
+ $RPM_BUILD_ROOT%{_libdir}/opensync-1.0/python-plugins/
+  
+rm -fr $RPM_BUILD_ROOT%{py_puresitedir}/plugins/
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -39,5 +56,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %{_sysconfdir}/synce/*.xml
-%{_bindir}/*
+%{_bindir}/*py
+%{_bindir}/%{name}
+%{_libdir}/opensync-1.0/python-plugins/*
 %{py_puresitedir}/*
