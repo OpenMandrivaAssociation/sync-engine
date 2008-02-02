@@ -1,6 +1,6 @@
 %define name	sync-engine
 
-Summary:	SynCE: Serial connection support
+Summary:	Synce synchronization engine
 Name:		%{name}
 Version:	0.11
 Release:	%mkrel 6
@@ -28,6 +28,8 @@ Requires:	python-sqlite2
 Synce synchronization engine.
 
 
+
+
 %package -n libopensync-plugin-synce
 Summary:	synce plugin for opensync
 Group:		Office
@@ -38,6 +40,11 @@ Obsoletes:	libopensync-plugin-synce <= 0.22-4
 
 %description -n libopensync-plugin-synce
 Synce plugin for Opensync
+
+Before using sync-engine, you must first copy the
+/usr/share/doc/sync-engine/config.xml into your $HOME/.synce
+directory.
+
 
 %prep
 %setup -q
