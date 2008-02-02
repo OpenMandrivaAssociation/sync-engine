@@ -3,10 +3,11 @@
 Summary:	SynCE: Serial connection support
 Name:		%{name}
 Version:	0.11
-Release:	%mkrel 5
-License:	MIT
+Release:	%mkrel 6
+License:	GPLv2+
 Group:		Office
-Source:		%{name}-%{version}.tar.bz2
+Source0:	%{name}-%{version}.tar.bz2
+Source1:        synce-config.xml
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%name-root
 BuildRequires:	python-setuptools
@@ -24,7 +25,7 @@ Requires:	python-sqlite2
 
 
 %description
-Sync-engine is part of the SynCE project.
+Synce synchronization engine.
 
 
 %package -n libopensync-plugin-synce
@@ -47,10 +48,7 @@ Synce plugin for Opensync
 %install
 rm -rf %{buildroot}
 mkdir -p %buildroot%_bindir
-%{__python} ./setup.py install --skip-build --root=%{buildroot}
-
-mkdir -p %{buildroot}/%{_sysconfdir}/synce
-mv config/config.xml %{buildroot}/%{_sysconfdir}/synce/config.xml
+%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/opensync-1.0/python-plugins/
 mv \
@@ -59,15 +57,19 @@ mv \
   
 rm -fr $RPM_BUILD_ROOT%{py_puresitedir}/plugins/
 
+# supply a default config as doc
+cp %{SOURCE1} config.xml
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%{_sysconfdir}/synce/*.xml
+%doc CHANGELOG COPYING config.xml
 %{_bindir}/*py
 %{_bindir}/%{name}
 %{py_puresitedir}/*
 
 %files -n libopensync-plugin-synce
+%defattr(-,root,root,-)
 %{_libdir}/opensync-1.0/python-plugins/*
