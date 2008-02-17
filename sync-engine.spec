@@ -3,7 +3,7 @@
 Summary:	Synce synchronization engine
 Name:		%{name}
 Version:	0.11
-Release:	%mkrel 6
+Release:	%mkrel 7
 License:	GPLv2+
 Group:		Office
 Source0:	%{name}-%{version}.tar.bz2
