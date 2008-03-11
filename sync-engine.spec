@@ -3,11 +3,12 @@
 Summary:	Synce synchronization engine
 Name:		%{name}
 Version:	0.11
-Release:	%mkrel 7
+Release:	%mkrel 8
 License:	GPLv2+
 Group:		Office
 Source0:	%{name}-%{version}.tar.bz2
 Source1:        synce-config.xml
+Patch0:		sync-engine-config.patch
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%name-root
 BuildRequires:	python-setuptools
@@ -27,16 +28,12 @@ Requires:	python-sqlite2
 %description
 Synce synchronization engine.
 
-
-
-
 %package -n libopensync-plugin-synce
 Summary:	synce plugin for opensync
 Group:		Office
 Requires:	libopensync-plugin-python >= 0.35
 Requires:	libopensync-plugin-vformat >= 0.35
 Requires:	sync-engine
-Obsoletes:	libopensync-plugin-synce <= 0.22-4
 
 %description -n libopensync-plugin-synce
 Synce plugin for Opensync
@@ -48,6 +45,7 @@ directory.
 
 %prep
 %setup -q
+%patch0 -p1 -b .config
 
 %build
 %{__python} ./setup.py build
@@ -55,24 +53,24 @@ directory.
 %install
 rm -rf %{buildroot}
 mkdir -p %buildroot%_bindir
-%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+%{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
-mkdir -p $RPM_BUILD_ROOT%{_libdir}/opensync-1.0/python-plugins/
+mkdir -p %{buildroot}%{_libdir}/opensync-1.0/python-plugins/
 mv \
- $RPM_BUILD_ROOT%{py_puresitedir}/plugins/synce-opensync-plugin-3* \
- $RPM_BUILD_ROOT%{_libdir}/opensync-1.0/python-plugins/
+ %{buildroot}%{py_puresitedir}/plugins/synce-opensync-plugin-3* \
+ %{buildroot}%{_libdir}/opensync-1.0/python-plugins/
   
-rm -fr $RPM_BUILD_ROOT%{py_puresitedir}/plugins/
+rm -fr %{buildroot}%{py_puresitedir}/plugins/
 
-# supply a default config as doc
-cp %{SOURCE1} config.xml
+mkdir -p %{buildroot}%{py_puresitedir}/SyncEngine/config
+install -m 0644 config/config.xml %{buildroot}%{py_puresitedir}/SyncEngine/config/config.xml
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc CHANGELOG COPYING config.xml
+%doc CHANGELOG COPYING
 %{_bindir}/*py
 %{_bindir}/%{name}
 %{py_puresitedir}/*
