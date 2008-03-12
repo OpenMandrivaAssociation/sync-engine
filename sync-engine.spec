@@ -3,7 +3,7 @@
 Summary:	Synce synchronization engine
 Name:		%{name}
 Version:	0.11
-Release:	%mkrel 9
+Release:	%mkrel 10
 License:	GPLv2+
 Group:		Office
 Source0:	%{name}-%{version}.tar.bz2
@@ -20,7 +20,7 @@ Patch0:		sync-engine-0.11-config.patch
 # - AdamW 2008/03
 Patch1:		sync-engine-0.11-rapierror.patch
 URL:		http://synce.sourceforge.net/
-Buildroot:	%{_tmppath}/%name-root
+Buildroot:	%{_tmppath}/%{name}-%{version}-root
 BuildRequires:	python-setuptools
 BuildRequires:	python-devel
 Requires:	python-libxslt
@@ -63,7 +63,7 @@ directory.
 
 %install
 rm -rf %{buildroot}
-mkdir -p %buildroot%_bindir
+mkdir -p %buildroot%{_bindir}
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
 mkdir -p %{buildroot}%{_libdir}/opensync-1.0/python-plugins/
@@ -76,6 +76,16 @@ rm -fr %{buildroot}%{py_puresitedir}/plugins/
 mkdir -p %{buildroot}%{py_puresitedir}/SyncEngine/config
 install -m 0644 config/config.xml %{buildroot}%{py_puresitedir}/SyncEngine/config/config.xml
 
+# dbus activation file (causes sync-engine to be run when something
+# tries to access the dbus service) - AdamW 2008/03, with thanks to
+# John Carr
+mkdir -p %{buildroot}%{_datadir}/dbus-1/services
+cat > %{buildroot}%{_datadir}/dbus-1/services/org.synce.service << EOF
+[D-BUS Service]
+Name=org.synce.SyncEngine
+Exec=/usr/bin/sync-engine
+EOF
+
 %clean
 rm -rf %{buildroot}
 
@@ -84,6 +94,7 @@ rm -rf %{buildroot}
 %doc CHANGELOG COPYING
 %{_bindir}/*py
 %{_bindir}/%{name}
+%{_datadir}/dbus-1/services/org.synce.service
 %{py_puresitedir}/*
 
 %files -n libopensync-plugin-synce
