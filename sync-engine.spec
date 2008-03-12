@@ -3,12 +3,22 @@
 Summary:	Synce synchronization engine
 Name:		%{name}
 Version:	0.11
-Release:	%mkrel 8
+Release:	%mkrel 9
 License:	GPLv2+
 Group:		Office
 Source0:	%{name}-%{version}.tar.bz2
 Source1:        synce-config.xml
-Patch0:		sync-engine-config.patch
+# From upstream SVN: correct typo in code for finding default config
+# file and copying it to home dir if it does not exist. Note that this
+# version of the patch also changes it to look for the config file in
+# SyncEngine/config rather than just /config, which is a Mandriva
+# change that may not appear upstream, so when updating this package
+# past 0.11 please don't just drop this patch as "merged" - AdamW
+# 2008/03
+Patch0:		sync-engine-0.11-config.patch
+# From upstream SVN: fixes some problems with librapi error handling
+# - AdamW 2008/03
+Patch1:		sync-engine-0.11-rapierror.patch
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%name-root
 BuildRequires:	python-setuptools
@@ -46,6 +56,7 @@ directory.
 %prep
 %setup -q
 %patch0 -p1 -b .config
+%patch1 -p1 -b .rapierror
 
 %build
 %{__python} ./setup.py build
