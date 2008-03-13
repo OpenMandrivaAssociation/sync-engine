@@ -1,9 +1,7 @@
-%define name	sync-engine
-
 Summary:	Synce synchronization engine
-Name:		%{name}
+Name:		sync-engine
 Version:	0.11
-Release:	%mkrel 10
+Release:	%mkrel 11
 License:	GPLv2+
 Group:		Office
 Source0:	%{name}-%{version}.tar.bz2
@@ -41,17 +39,12 @@ Synce synchronization engine.
 %package -n libopensync-plugin-synce
 Summary:	synce plugin for opensync
 Group:		Office
-Requires:	libopensync-plugin-python >= 0.35
-Requires:	libopensync-plugin-vformat >= 0.35
-Requires:	sync-engine
+Requires:	libopensync-plugin-python >= 0.22
+Requires:	%{name}
 
 %description -n libopensync-plugin-synce
-Synce plugin for Opensync
-
-Before using sync-engine, you must first copy the
-/usr/share/doc/sync-engine/config.xml into your $HOME/.synce
-directory.
-
+SynCE plugin for OpenSync. Allows applications using the OpenSync
+framework to synchronise with devices handled by SynCE.
 
 %prep
 %setup -q
@@ -66,11 +59,11 @@ rm -rf %{buildroot}
 mkdir -p %buildroot%{_bindir}
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
-mkdir -p %{buildroot}%{_libdir}/opensync-1.0/python-plugins/
+mkdir -p %{buildroot}%{_libdir}/opensync/python-plugins/
 mv \
- %{buildroot}%{py_puresitedir}/plugins/synce-opensync-plugin-3* \
- %{buildroot}%{_libdir}/opensync-1.0/python-plugins/
-  
+ %{buildroot}%{py_puresitedir}/plugins/synce-opensync-plugin-2* \
+ %{buildroot}%{_libdir}/opensync/python-plugins/
+
 rm -fr %{buildroot}%{py_puresitedir}/plugins/
 
 mkdir -p %{buildroot}%{py_puresitedir}/SyncEngine/config
@@ -86,6 +79,14 @@ Name=org.synce.SyncEngine
 Exec=/usr/bin/sync-engine
 EOF
 
+# default config for opensync plugin, specifying an empty configuration
+# so apps like kitchensync know the plugin needs no config. Note this
+# will be different for opensync 0.3 / 0.4 - AdamW 2008/03
+mkdir -p %{buildroot}%{_datadir}/opensync/defaults
+cat > %{buildroot}%{_datadir}/opensync/defaults/synce-opensync-plugin << EOF
+<config></config>
+EOF
+
 %clean
 rm -rf %{buildroot}
 
@@ -99,4 +100,6 @@ rm -rf %{buildroot}
 
 %files -n libopensync-plugin-synce
 %defattr(-,root,root,-)
-%{_libdir}/opensync-1.0/python-plugins/*
+%{_libdir}/opensync/python-plugins/*
+%{_datadir}/opensync/defaults/synce-opensync-plugin
+
