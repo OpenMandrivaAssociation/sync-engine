@@ -1,7 +1,7 @@
 Summary:	Synce synchronization engine
 Name:		sync-engine
 Version:	0.11
-Release:	%mkrel 11
+Release:	%mkrel 12
 License:	GPLv2+
 Group:		Office
 Source0:	%{name}-%{version}.tar.bz2
@@ -61,7 +61,7 @@ mkdir -p %buildroot%{_bindir}
 
 mkdir -p %{buildroot}%{_libdir}/opensync/python-plugins/
 mv \
- %{buildroot}%{py_puresitedir}/plugins/synce-opensync-plugin-2* \
+ %{buildroot}%{py_puresitedir}/plugins/synce-opensync-plugin-2x.py \
  %{buildroot}%{_libdir}/opensync/python-plugins/
 
 rm -fr %{buildroot}%{py_puresitedir}/plugins/
