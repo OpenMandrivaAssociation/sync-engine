@@ -1,7 +1,7 @@
 Summary:	Synce synchronization engine
 Name:		sync-engine
 Version:	0.11
-Release:	%mkrel 12
+Release:	%mkrel 13
 License:	GPLv2+
 Group:		Office
 Source0:	%{name}-%{version}.tar.bz2
@@ -17,6 +17,11 @@ Patch0:		sync-engine-0.11-config.patch
 # From upstream SVN: fixes some problems with librapi error handling
 # - AdamW 2008/03
 Patch1:		sync-engine-0.11-rapierror.patch
+# From upstream SVN: fix some more error handling issues - return
+# errors correctly rather than erroring out with a Python traceback
+# when partnership limit is reached, or name entered for a partnership
+# is too long - AdamW 2008/03
+Patch2:		sync-engine-0.11-errors.patch
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%{name}-%{version}-root
 BuildRequires:	python-setuptools
@@ -50,6 +55,7 @@ framework to synchronise with devices handled by SynCE.
 %setup -q
 %patch0 -p1 -b .config
 %patch1 -p1 -b .rapierror
+%patch2 -p1 -b .errors
 
 %build
 %{__python} ./setup.py build
