@@ -1,7 +1,7 @@
 Summary:	Synce synchronization engine
 Name:		sync-engine
 Version:	0.11
-Release:	%mkrel 14
+Release:	%mkrel 15
 License:	GPLv2+
 Group:		Office
 Source0:	%{name}-%{version}.tar.bz2
@@ -22,9 +22,6 @@ Patch1:		sync-engine-0.11-rapierror.patch
 # when partnership limit is reached, or name entered for a partnership
 # is too long - AdamW 2008/03
 Patch2:		sync-engine-0.11-errors.patch
-# From upstream SVN: send out a d-bus signal when a partnership is
-# deleted or created (useful for clients)
-Patch3:		sync-engine-0.11-partnershipdbus.patch
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%{name}-%{version}-root
 BuildRequires:	python-setuptools
@@ -59,7 +56,6 @@ framework to synchronise with devices handled by SynCE.
 %patch0 -p1 -b .config
 %patch1 -p1 -b .rapierror
 %patch2 -p1 -b .errors
-%patch3 -p1 -b .partnership
 
 %build
 %{__python} ./setup.py build
