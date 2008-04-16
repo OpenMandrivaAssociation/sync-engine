@@ -1,30 +1,11 @@
 Summary:	Synce synchronization engine
 Name:		sync-engine
-Version:	0.11
-Release:	%mkrel 16
+Version:	0.11.1
+Release:	%mkrel 1
 License:	GPLv2+
 Group:		Office
-Source0:	%{name}-%{version}.tar.bz2
+Source0:	http://prdownloads.sourceforge.net/synce/%{name}-%{version}.tar.gz
 Source1:        synce-config.xml
-# From upstream SVN: correct typo in code for finding default config
-# file and copying it to home dir if it does not exist. Note that this
-# version of the patch also changes it to look for the config file in
-# SyncEngine/config rather than just /config, which is a Mandriva
-# change that may not appear upstream, so when updating this package
-# past 0.11 please don't just drop this patch as "merged" - AdamW
-# 2008/03
-Patch0:		sync-engine-0.11-config.patch
-# From upstream SVN: fixes some problems with librapi error handling
-# - AdamW 2008/03
-Patch1:		sync-engine-0.11-rapierror.patch
-# From upstream SVN: fix some more error handling issues - return
-# errors correctly rather than erroring out with a Python traceback
-# when partnership limit is reached, or name entered for a partnership
-# is too long - AdamW 2008/03
-Patch2:		sync-engine-0.11-errors.patch
-# From upstream SVN: send out a d-bus signal when a partnership is
-# deleted or created (useful for clients)
-Patch3:		sync-engine-0.11-partnershipdbus.patch
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%{name}-%{version}-root
 BuildRequires:	python-setuptools
@@ -56,10 +37,6 @@ framework to synchronise with devices handled by SynCE.
 
 %prep
 %setup -q
-%patch0 -p1 -b .config
-%patch1 -p1 -b .rapierror
-%patch2 -p1 -b .errors
-%patch3 -p1 -b .partnership
 
 %build
 %{__python} ./setup.py build
@@ -90,7 +67,7 @@ Exec=/usr/bin/sync-engine
 EOF
 
 # default config for opensync plugin, specifying an empty configuration
-# so apps like kitchensync know the plugin needs no config. Note this
+# so apps like multisync know the plugin needs no config. Note this
 # will be different for opensync 0.3 / 0.4 - AdamW 2008/03
 mkdir -p %{buildroot}%{_datadir}/opensync/defaults
 cat > %{buildroot}%{_datadir}/opensync/defaults/synce-opensync-plugin << EOF
