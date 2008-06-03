@@ -1,12 +1,14 @@
-Summary:	Synce synchronization engine
+Summary:	SynCE synchronization engine
 Name:		sync-engine
 Version:	0.11.1
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPLv2+
 Group:		Office
 Source0:	http://prdownloads.sourceforge.net/synce/%{name}-%{version}.tar.gz
 Source1:        synce-config.xml
 Patch0:		sync-engine-0.11.1-config.patch
+# From upstream SVN: support synce-hal - AdamW 2008/06
+Patch1:		sync-engine-0.11.1-hal.patch
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%{name}-%{version}-root
 BuildRequires:	python-setuptools
@@ -22,23 +24,29 @@ Requires:	python-pyxml
 Requires:	python-dbus
 Requires:	python-sqlite2
 
-
 %description
-Synce synchronization engine.
+SynCE synchronization engine. This component handles actual data
+exchange between a Windows Mobile 5+ device and a synchronization
+application.
 
-%package -n libopensync-plugin-synce
+%package -n synce-opensync-plugin
 Summary:	synce plugin for opensync
 Group:		Office
 Requires:	libopensync-plugin-python >= 0.22
 Requires:	%{name}
+Obsoletes:	libopensync-plugin-synce < 0.22
 
-%description -n libopensync-plugin-synce
+%description -n synce-opensync-plugin
 SynCE plugin for OpenSync. Allows applications using the OpenSync
-framework to synchronise with devices handled by SynCE.
+framework to synchronise with devices handled by SynCE. This is the
+plugin provided by the SynCE team, rather than that provided by the
+OpenSync team. This plugin works with Windows Mobile 5 and later
+devices.
 
 %prep
 %setup -q
 %patch0 -p1 -b .config
+%patch1 -p0 -b .hal
 
 %build
 %{__python} ./setup.py build
@@ -87,7 +95,7 @@ rm -rf %{buildroot}
 %{_datadir}/dbus-1/services/org.synce.service
 %{py_puresitedir}/*
 
-%files -n libopensync-plugin-synce
+%files -n synce-opensync-plugin
 %defattr(-,root,root,-)
 %{_libdir}/opensync/python-plugins/*
 %{_datadir}/opensync/defaults/synce-opensync-plugin
