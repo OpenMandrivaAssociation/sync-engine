@@ -1,7 +1,7 @@
 Summary:	SynCE synchronization engine
 Name:		sync-engine
 Version:	0.11.1
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	GPLv2+
 Group:		Office
 Source0:	http://prdownloads.sourceforge.net/synce/%{name}-%{version}.tar.gz
@@ -9,6 +9,9 @@ Source1:        synce-config.xml
 Patch0:		sync-engine-0.11.1-config.patch
 # From upstream SVN: support synce-hal - AdamW 2008/06
 Patch1:		sync-engine-0.11.1-hal.patch
+# Better plugin description to differentiate from the other plugin
+# that handles older devices - AdamW 2008/06
+Patch2:		sync-engine-0.11.1-description.patch
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%{name}-%{version}-root
 BuildRequires:	python-setuptools
@@ -47,6 +50,7 @@ devices.
 %setup -q
 %patch0 -p1 -b .config
 %patch1 -p0 -b .hal
+%patch2 -p1 -b .description
 
 %build
 %{__python} ./setup.py build
