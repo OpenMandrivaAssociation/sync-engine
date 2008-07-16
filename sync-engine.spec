@@ -6,12 +6,9 @@ License:	GPLv2+
 Group:		Office
 Source0:	http://prdownloads.sourceforge.net/synce/%{name}-%{version}.tar.gz
 Source1:        synce-config.xml
-Patch0:		sync-engine-0.11.1-config.patch
-# From upstream SVN: support synce-hal - AdamW 2008/06
-Patch1:		sync-engine-0.11.1-hal.patch
 # Better plugin description to differentiate from the other plugin
 # that handles older devices - AdamW 2008/06
-Patch2:		sync-engine-0.11.1-description.patch
+Patch0:		sync-engine-0.11.1-description.patch
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%{name}-%{version}-root
 BuildRequires:	python-setuptools
@@ -48,9 +45,7 @@ devices.
 
 %prep
 %setup -q
-%patch0 -p1 -b .config
-%patch1 -p0 -b .hal
-%patch2 -p1 -b .description
+%patch0 -p1 -b .description
 
 %build
 %{__python} ./setup.py build
@@ -66,9 +61,6 @@ mv \
  %{buildroot}%{_libdir}/opensync/python-plugins/
 
 rm -fr %{buildroot}%{py_puresitedir}/plugins/
-
-mkdir -p %{buildroot}%{py_puresitedir}/SyncEngine/config
-install -m 0644 config/config.xml %{buildroot}%{py_puresitedir}/SyncEngine/config/config.xml
 
 # dbus activation file (causes sync-engine to be run when something
 # tries to access the dbus service) - AdamW 2008/03, with thanks to
@@ -88,6 +80,10 @@ cat > %{buildroot}%{_datadir}/opensync/defaults/synce-opensync-plugin << EOF
 <config></config>
 EOF
 
+# install a default config file
+mkdir -p %{buildroot}%{_sysconfdir}
+install -m 0644 config/syncengine.conf.xml %{buildroot}%{_sysconfdir}/syncengine.conf.xml
+
 %clean
 rm -rf %{buildroot}
 
@@ -96,6 +92,7 @@ rm -rf %{buildroot}
 %doc CHANGELOG COPYING
 %{_bindir}/*py
 %{_bindir}/%{name}
+%{_sysconfdir}/syncengine.conf.xml
 %{_datadir}/dbus-1/services/org.synce.service
 %{py_puresitedir}/*
 
