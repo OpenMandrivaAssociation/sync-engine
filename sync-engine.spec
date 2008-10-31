@@ -1,7 +1,7 @@
 Summary:	SynCE synchronization engine
 Name:		sync-engine
 Version:	0.12
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	GPLv2+
 Group:		Office
 Source0:	http://prdownloads.sourceforge.net/synce/%{name}-%{version}.tar.gz
