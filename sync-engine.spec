@@ -1,7 +1,7 @@
 Summary:	SynCE synchronization engine
 Name:		sync-engine
-Version:	0.12
-Release:	%mkrel 5
+Version:	0.13
+Release:	%mkrel 1
 License:	GPLv2+
 Group:		Office
 Source0:	http://prdownloads.sourceforge.net/synce/%{name}-%{version}.tar.gz
@@ -13,8 +13,6 @@ Patch0:		sync-engine-0.11.1-description.patch
 # subtype (rather than expecting them to have subtype VOICE). Fixes
 # syncing to synce from Nokia and Blackberry, at least. - AdamW 2008/09
 Patch1:		sync-engine-0.12-voice.patch
-# From upstream SVN: fix birthday sync - AdamW 2008/10
-Patch2:		sync-engine-0.12-birthdays.patch
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%{name}-%{version}-root
 BuildRequires:	python-setuptools
@@ -53,7 +51,6 @@ devices.
 %setup -q
 %patch0 -p1 -b .description
 %patch1 -p1 -b .voice
-%patch2 -p0 -b .birthdays
 
 %build
 %{__python} ./setup.py build
