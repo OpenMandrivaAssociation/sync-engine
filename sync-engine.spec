@@ -1,18 +1,12 @@
+%define srcname synce-sync-engine
 Summary:	SynCE synchronization engine
 Name:		sync-engine
-Version:	0.13
+Version:	0.14
 Release:	%mkrel 1
 License:	GPLv2+
 Group:		Office
-Source0:	http://prdownloads.sourceforge.net/synce/%{name}-%{version}.tar.gz
+Source0:	http://downloads.sourceforge.net/project/synce/SynCE/%{version}/%{srcname}-%{version}.tar.gz
 Source1:        synce-config.xml
-# Better plugin description to differentiate from the other plugin
-# that handles older devices - AdamW 2008/06
-Patch0:		sync-engine-0.11.1-description.patch
-# From Pawel Kot: handle phone numbers with type WORK/HOME and no
-# subtype (rather than expecting them to have subtype VOICE). Fixes
-# syncing to synce from Nokia and Blackberry, at least. - AdamW 2008/09
-Patch1:		sync-engine-0.12-voice.patch
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%{name}-%{version}-root
 BuildRequires:	python-setuptools
@@ -48,9 +42,7 @@ OpenSync team. This plugin works with Windows Mobile 5 and later
 devices.
 
 %prep
-%setup -q
-%patch0 -p1 -b .description
-%patch1 -p1 -b .voice
+%setup -q -n %{srcname}-%{version}
 
 %build
 %{__python} ./setup.py build
