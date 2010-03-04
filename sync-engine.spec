@@ -1,11 +1,13 @@
 %define srcname synce-sync-engine
+%define svn r3893
+
 Summary:	SynCE synchronization engine
 Name:		sync-engine
-Version:	0.14
-Release:	%mkrel 1
+Version:	0.15
+Release:	%mkrel 0.%{svn}.1
 License:	GPLv2+
 Group:		Office
-Source0:	http://downloads.sourceforge.net/project/synce/SynCE/%{version}/%{srcname}-%{version}.tar.gz
+Source0:	http://downloads.sourceforge.net/project/synce/SynCE/%{version}/%{name}-%{svn}.tar.xz
 Source1:        synce-config.xml
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%{name}-%{version}-root
@@ -42,7 +44,7 @@ OpenSync team. This plugin works with Windows Mobile 5 and later
 devices.
 
 %prep
-%setup -q -n %{srcname}-%{version}
+%setup -q -n %{name}
 
 %build
 %{__python} ./setup.py build
