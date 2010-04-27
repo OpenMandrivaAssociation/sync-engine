@@ -1,14 +1,13 @@
 %define srcname synce-sync-engine
-%define svn r3893
+%define svn 0
 
 Summary:	SynCE synchronization engine
 Name:		sync-engine
 Version:	0.15
-Release:	%mkrel 0.%{svn}.1
+Release:	%mkrel 1
 License:	GPLv2+
 Group:		Office
-Source0:	http://downloads.sourceforge.net/project/synce/SynCE/%{version}/%{name}-%{svn}.tar.xz
-Source1:        synce-config.xml
+Source0:	http://downloads.sourceforge.net/project/synce/SynCE/%{version}/synce-%{name}-%{version}.tar.gz
 URL:		http://synce.sourceforge.net/
 Buildroot:	%{_tmppath}/%{name}-%{version}-root
 BuildRequires:	python-setuptools
@@ -44,7 +43,7 @@ OpenSync team. This plugin works with Windows Mobile 5 and later
 devices.
 
 %prep
-%setup -q -n %{name}
+%setup -q -n synce-%{name}-%{version}
 
 %build
 %{__python} ./setup.py build
@@ -61,15 +60,9 @@ mv \
 
 rm -fr %{buildroot}%{py_puresitedir}/plugins/
 
-# dbus activation file (causes sync-engine to be run when something
-# tries to access the dbus service) - AdamW 2008/03, with thanks to
-# John Carr
+# install dbus service file
 mkdir -p %{buildroot}%{_datadir}/dbus-1/services
-cat > %{buildroot}%{_datadir}/dbus-1/services/org.synce.service << EOF
-[D-BUS Service]
-Name=org.synce.SyncEngine
-Exec=/usr/bin/sync-engine
-EOF
+install -m 0644 config/org.synce.SyncEngine.service %{buildroot}%{_datadir}/dbus-1/services/org.synce.SyncEngine.service
 
 # default config for opensync plugin, specifying an empty configuration
 # so apps like multisync know the plugin needs no config. Note this
@@ -92,7 +85,7 @@ rm -rf %{buildroot}
 %{_bindir}/*py
 %{_bindir}/%{name}
 %{_sysconfdir}/syncengine.conf.xml
-%{_datadir}/dbus-1/services/org.synce.service
+%{_datadir}/dbus-1/services/org.synce.SyncEngine.service
 %{py_puresitedir}/*
 
 %files -n synce-opensync-plugin
