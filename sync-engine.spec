@@ -6,7 +6,7 @@
 Summary:	SynCE synchronization engine
 Name:		sync-engine
 Version:	0.15
-Release:	2
+Release:	3
 License:	GPLv2+
 Group:		Office
 Url:		http://synce.sourceforge.net/
