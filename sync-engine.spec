@@ -9,7 +9,7 @@ Version:	0.15
 Release:	3
 License:	GPLv2+
 Group:		Office
-Url:		http://synce.sourceforge.net/
+Url:		https://synce.sourceforge.net/
 Source0:	http://downloads.sourceforge.net/project/synce/SynCE/%{version}/synce-%{name}-%{version}.tar.gz
 BuildRequires:	python-setuptools
 BuildRequires:	pkgconfig(python)
